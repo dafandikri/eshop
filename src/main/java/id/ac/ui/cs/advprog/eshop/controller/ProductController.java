@@ -36,6 +36,22 @@ public class ProductController {
         return "productList";
     }
 
+    @GetMapping("/edit")
+    public String editProductPage(@RequestParam("id") String productId, Model model) {
+        Product product = service.findById(productId);
+        if (product == null) {
+            return "redirect:/product/list";
+        }
+        model.addAttribute("product", product);
+        return "EditProduct";
+    }
+
+    @PostMapping("/edit")
+    public String editProductPost(@ModelAttribute Product product) {
+        service.update(product);
+        return "redirect:list";
+    }
+  
     @PostMapping("/delete")
     public String deleteProduct(@RequestParam("id") String productId) {
         service.deleteById(productId);
