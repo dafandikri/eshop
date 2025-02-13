@@ -66,4 +66,66 @@ class ProductRepositoryTest {
         assertEquals(product2.getProductId(), savedProduct.getProductId());
         assertFalse(productIterator.hasNext());
     }
+
+    @Test
+    void testUpdateProductPositive() {
+        // Arrange: create and add a product
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Example Product");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        // Act: update the product
+        product.setProductName("Updated Product Name");
+        product.setProductQuantity(200);
+        Product updated = productRepository.update(product);
+
+        // Assert: ensure the product was indeed updated
+        assertNotNull(updated);
+        assertEquals("eb558e9f-1c39-460e-8860-71af6af63bd6", updated.getProductId());
+        assertEquals("Updated Product Name", updated.getProductName());
+        assertEquals(200, updated.getProductQuantity());
+    }
+
+    @Test
+    void testUpdateProductNegative() {
+        // Arrange: create a product but do NOT add it to the repository
+        Product product = new Product();
+        product.setProductId("non-existent-id");
+        product.setProductName("Non-existent Name");
+        product.setProductQuantity(10);
+
+        // Act: attempt to update a product that wasn't created
+        Product updated = productRepository.update(product);
+
+        // Assert: expect null since no matching product exists
+        assertNull(updated);
+    }
+
+    @Test
+    void testDeleteProductPositive() {
+        // Arrange: create and add a product
+        Product product = new Product();
+        product.setProductId("a0f9de46-90b1-437d-a0bf-d0821dde9096");
+        product.setProductName("To-be-deleted");
+        product.setProductQuantity(50);
+        productRepository.create(product);
+
+        // Act: delete the product by ID
+        productRepository.deleteById("a0f9de46-90b1-437d-a0bf-d0821dde9096");
+
+        // Assert: confirm the product no longer exists
+        assertNull(productRepository.findById("a0f9de46-90b1-437d-a0bf-d0821dde9096"));
+    }
+
+    @Test
+    void testDeleteProductNegative() {
+        // Arrange/Act: try deleting a product that doesn't exist
+        productRepository.deleteById("wrong-id");
+
+        // Assert: no errors, repository stays unaffected
+        // (Change if you want to confirm an exception or another behavior)
+        assertNull(productRepository.findById("wrong-id"));
+    }
 }
