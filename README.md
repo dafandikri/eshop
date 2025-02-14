@@ -1,4 +1,10 @@
-# eshop
+# Advance Programming Course
+This repository contains the modules, tutorials, and exercises for the Advance Programming Course.
+
+## Table of Contents
+1. [Module 1](#module-1)
+
+## Module 1 - Coding Standard <a id="module-1"></a>
 
 ## <ins> Reflection 1 </ins>
 
