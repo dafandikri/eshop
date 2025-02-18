@@ -10,7 +10,7 @@ on:
   # To guarantee Maintained check is occasionally updated. See
   # https://github.com/ossf/scorecard/blob/main/docs/checks.md#maintained
   schedule:
-    - cron: '39 8 * * 2'
+    - cron: '16 23 * * 4'
   push:
     branches: [ "main" ]
 
@@ -59,9 +59,9 @@ jobs:
       # Upload the results as artifacts (optional). Commenting out will disable uploads of run results in SARIF
       # format to the repository Actions tab.
       - name: "Upload artifact"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: "scorecard_sarif"        # or "sarifResults", etc.
+          name: SARIF file
           path: results.sarif
           retention-days: 5
 
