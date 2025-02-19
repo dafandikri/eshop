@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -82,5 +83,59 @@ class ProductServiceImplTest {
 
         // Assert
         verify(productRepository, times(1)).deleteById("wrong-uuid");
+    }
+
+    @Test
+    void testCreateProduct() {
+        Product newProduct = new Product();
+        newProduct.setProductId("new-uuid");
+        newProduct.setProductName("New Product");
+        newProduct.setProductQuantity(5);
+
+        when(productRepository.create(newProduct)).thenReturn(newProduct);
+        
+        Product createdProduct = productService.create(newProduct);
+        
+        assertNotNull(createdProduct);
+        assertEquals("New Product", createdProduct.getProductName());
+        verify(productRepository, times(1)).create(newProduct);
+    }
+
+    @Test
+    void testFindAllProducts() {
+        Product p1 = new Product();
+        p1.setProductId("p1");
+        p1.setProductName("Product 1");
+        p1.setProductQuantity(3);
+
+        Product p2 = new Product();
+        p2.setProductId("p2");
+        p2.setProductName("Product 2");
+        p2.setProductQuantity(7);
+
+        Iterator<Product> iterator = Arrays.asList(p1, p2).iterator();
+        when(productRepository.findAll()).thenReturn(iterator);
+        
+        List<Product> products = productService.findAll();
+        assertEquals(2, products.size());
+        assertTrue(products.contains(p1));
+        assertTrue(products.contains(p2));
+        verify(productRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testFindByIdProduct() {
+        String productId = "existing-id";
+        Product product = new Product();
+        product.setProductId(productId);
+        product.setProductName("Exist Product");
+        product.setProductQuantity(8);
+
+        when(productRepository.findById(productId)).thenReturn(product);
+        
+        Product foundProduct = productService.findById(productId);
+        assertNotNull(foundProduct);
+        assertEquals("Exist Product", foundProduct.getProductName());
+        verify(productRepository, times(1)).findById(productId);
     }
 }
