@@ -146,5 +146,5 @@ My current project successfully implements both Continuous Integration (CI) and 
 
 ## Testing Report Code Coverage
 
-![alt text](<CodeCoverage.png>)
+![Code Coverage](<resource/CodeCoverage.png>)
 
