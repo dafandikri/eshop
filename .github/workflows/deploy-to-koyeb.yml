@@ -17,12 +17,8 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
           echo "PATH=$HOME/.koyeb/bin:$PATH" >> $GITHUB_ENV
 
-      - name: Create Koyeb config file
-        run: |
-          mkdir -p $HOME/.koyeb
-          echo "token: ${{ secrets.KOYEB_API_TOKEN }}" > $HOME/.koyeb.yaml
-
       - name: Deploy to Koyeb
         run: |
           koyeb service update eshop \
           --app fit-liuka \
+          --token ${{ secrets.KOYEB_API_TOKEN }}
