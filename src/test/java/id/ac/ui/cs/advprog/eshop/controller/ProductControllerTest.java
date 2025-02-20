@@ -38,7 +38,7 @@ public class ProductControllerTest {
     void testCreateProductPage() throws Exception {
         mockMvc.perform(get("/product/create"))
                .andExpect(status().isOk())
-               .andExpect(view().name("createProduct"))
+               .andExpect(view().name("CreateProduct"))
                .andExpect(model().attributeExists("product"));
     }
 
@@ -65,7 +65,7 @@ public class ProductControllerTest {
                .flashAttr("product", product)
                .flashAttr("org.springframework.validation.BindingResult.product", bindingResult))
                .andExpect(status().isOk())
-               .andExpect(view().name("createProduct"));
+               .andExpect(view().name("CreateProduct"));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class ProductControllerTest {
         when(service.findAll()).thenReturn(Collections.emptyList());
         mockMvc.perform(get("/product/list"))
                .andExpect(status().isOk())
-               .andExpect(view().name("productList"))
+               .andExpect(view().name("ProductList"))
                .andExpect(model().attributeExists("products"));
     }
 
