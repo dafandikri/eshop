@@ -20,6 +20,6 @@ public class MainControllerTest {
     void testMainPage() throws Exception {
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get(""))
                .andExpect(status().isOk())
-               .andExpect(view().name("homePage"));
+               .andExpect(view().name("Homepage"));
     }
 }
