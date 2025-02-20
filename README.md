@@ -1,8 +1,12 @@
 # Advance Programming Course
 This repository contains the modules, tutorials, and exercises for the Advance Programming Course.
 
+## Deployment Link
+* https://fit-liuka-dafandikri-910b7eeb.koyeb.app/
+
 ## Table of Contents
 1. [Module 1](#module-1)
+2. [Module 2](#module-2)
 
 ## Module 1 - Coding Standard <a id="module-1"></a>
 
@@ -92,3 +96,55 @@ With our new functional test suite, aimed at checking product creation and count
 - **Use a Base Functional Test Class**: Move common testing logic (driver setup, teardown, or repeated form fill steps) into a parent class.
 - **Maintain Meaningful Test Names**: Let the test name explain the condition verified and the expected outcome.
 - **Keep an Eye on Coverage—but Don’t Rely on It Alone**: Use code coverage to find untested areas but remember that executed code isn’t necessarily fully tested.
+
+---
+
+## Module 2 - CI/CD & DevOps <a id="module-2"></a>
+
+## <ins> Reflection 1 </ins>
+
+### Code Quality Issues Fixed
+
+**Wildcard Imports in Test Classes**
+   * **Issue**: Several test classes (`ProductServiceImplTest`, `MainControllerTest`, and `ProductControllerTest`) used wildcard imports (e.g., `import static org.mockito.Mockito.*`).
+   * **Fix**: Replaced all wildcard imports with explicit imports for specific classes and methods needed.
+   * **Strategy**: 
+     - Explicitly import only the required classes/methods
+     - Improve code readability and maintainability
+     - Make dependencies clear and traceable
+     - Prevent potential naming conflicts
+     - Example: Changed `import static org.mockito.Mockito.*` to specific imports like:
+       ```java
+       import static org.mockito.Mockito.when;
+       import static org.mockito.Mockito.verify;
+       import static org.mockito.Mockito.doNothing;
+       ```
+
+## <ins> Reflection 2 </ins>
+
+### CI/CD Implementation Analysis
+
+My current project successfully implements both Continuous Integration (CI) and Continuous Deployment (CD) practices:
+
+**Continuous Integration (CI)**
+- Implemented through GitHub Actions workflows (defined in `.github/workflows`)
+- Automatically triggers on every push or pull request
+- Features:
+  - Automated test execution with 100% coverage
+  - Static code analysis with PMD
+  - Early detection of bugs and security vulnerabilities
+
+**Continuous Deployment (CD)**
+- Implemented using Koyeb as the deployment platform
+- Features:
+  - Automatic deployment triggered by repository updates
+  - Direct deployment to production environment for main branch changes
+- Current Implementation:
+  - Uses Koyeb's Autodeployment feature instead of explicit GitHub Actions workflow
+  - While not using push-based GitHub Actions (due to Koyeb free plan limitations), still achieves automated deployment
+  - Successfully ensures latest version deployment after main branch updates
+
+## Testing Report Code Coverage
+
+![alt text](<Screenshot 2025-02-20 at 22.31.59.png>)
+
