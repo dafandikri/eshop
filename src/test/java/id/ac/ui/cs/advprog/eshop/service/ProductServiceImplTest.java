@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.ArgumentMatchers; // added for explicit any usage
 
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +15,6 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
-import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
@@ -38,7 +38,7 @@ class ProductServiceImplTest {
     @Test
     void testEditProductPositive() {
         // Arrange
-        when(productRepository.update(any(Product.class))).thenReturn(existingProduct);
+        when(productRepository.update(ArgumentMatchers.any(Product.class))).thenReturn(existingProduct);
 
         // Act
         Product updatedProduct = productService.update(existingProduct);
@@ -53,7 +53,7 @@ class ProductServiceImplTest {
     void testEditProductNegative() {
         // Arrange
         // Simulate the repository returning null if it can’t find the product to update
-        when(productRepository.update(any(Product.class))).thenReturn(null);
+        when(productRepository.update(ArgumentMatchers.any(Product.class))).thenReturn(null);
 
         // Act
         Product notFoundProduct = productService.update(existingProduct);
