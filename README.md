@@ -146,5 +146,5 @@ My current project successfully implements both Continuous Integration (CI) and 
 
 ## Testing Report Code Coverage
 
-![alt text](<Screenshot 2025-02-20 at 22.31.59.png>)
+![alt text](<CodeCoverage.png>)
 
