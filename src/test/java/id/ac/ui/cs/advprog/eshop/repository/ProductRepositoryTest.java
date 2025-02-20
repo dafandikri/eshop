@@ -8,7 +8,9 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.lang.reflect.Field;
 import java.util.Iterator;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -125,7 +127,139 @@ class ProductRepositoryTest {
         productRepository.deleteById("wrong-id");
 
         // Assert: no errors, repository stays unaffected
-        // (Change if you want to confirm an exception or another behavior)
         assertNull(productRepository.findById("wrong-id"));
+    }
+
+    @Test
+    void testCreateProductWithNullId() {
+        Product product = new Product();
+        // explicitly leave productId as null to trigger auto-generation
+        product.setProductId(null);
+        product.setProductName("Auto-ID Product");
+        product.setProductQuantity(75);
+        Product created = productRepository.create(product);
+        assertNotNull(created.getProductId());
+        // Check that the product is indeed saved:
+        Product found = productRepository.findById(created.getProductId());
+        assertNotNull(found);
+    }
+
+    @Test
+    void testFindByIdWithNullProductInData() throws Exception {
+        // Manually add a product with a null id into productData
+        Field field = ProductRepository.class.getDeclaredField("productData");
+        field.setAccessible(true);
+        List<Product> productData = (List<Product>) field.get(productRepository);
+        Product product = new Product();
+        product.setProductId(null);
+        product.setProductName("No ID Product");
+        product.setProductQuantity(10);
+        productData.add(product);
+        // Expect findById(null) to return null since condition checks for non-null id
+        assertNull(productRepository.findById(null));
+        // Searching for any non-null id also returns null
+        assertNull(productRepository.findById("any-id"));
+    }
+
+    @Test
+    void testUpdateProductWithNullId() {
+        // When updating a product with null id, update should return null
+        Product product = new Product();
+        product.setProductId(null);
+        product.setProductName("Null ID Product");
+        product.setProductQuantity(20);
+        assertNull(productRepository.update(product));
+    }
+
+    @Test
+    void testDeleteByIdWithNullArgument() throws Exception {
+        // Manually add a product with null id into productData
+        Field field = ProductRepository.class.getDeclaredField("productData");
+        field.setAccessible(true);
+        List<Product> productData = (List<Product>) field.get(productRepository);
+        int originalSize = productData.size();
+        Product product = new Product();
+        product.setProductId(null);
+        product.setProductName("Null ID Product");
+        product.setProductQuantity(20);
+        productData.add(product);
+        // Calling deleteById(null) should not remove any product because condition fails.
+        productRepository.deleteById(null);
+        assertEquals(originalSize + 1, productData.size());
+    }
+
+    @Test
+    void testUpdateProductWithMultipleProducts() {
+        // Arrange: add two products
+        Product product1 = new Product();
+        product1.setProductId("id-1");
+        product1.setProductName("Product 1");
+        product1.setProductQuantity(10);
+        productRepository.create(product1);
+
+        Product product2 = new Product();
+        product2.setProductId("id-2");
+        product2.setProductName("Product 2");
+        product2.setProductQuantity(20);
+        productRepository.create(product2);
+
+        // Act: update second product (this forces the for-loop to iterate past the first element)
+        Product update = new Product();
+        update.setProductId("id-2");
+        update.setProductName("Updated Product 2");
+        update.setProductQuantity(30);
+        Product returned = productRepository.update(update);
+
+        // Assert: product2 is updated, product1 remains unchanged
+        assertNotNull(returned);
+        assertEquals("Updated Product 2", returned.getProductName());
+        assertEquals(30, returned.getProductQuantity());
+        assertEquals("Product 1", productRepository.findById("id-1").getProductName());
+    }
+
+    @Test
+    void testDeleteProductMultipleProducts() {
+        // Arrange: add two products
+        Product product1 = new Product();
+        product1.setProductId("id-1");
+        product1.setProductName("Product 1");
+        product1.setProductQuantity(10);
+        productRepository.create(product1);
+
+        Product product2 = new Product();
+        product2.setProductId("id-2");
+        product2.setProductName("Product 2");
+        product2.setProductQuantity(20);
+        productRepository.create(product2);
+
+        // Act: delete the second product (iterating past a non-matching first element)
+        productRepository.deleteById("id-2");
+
+        // Assert: product2 is removed; product1 remains available
+        assertNotNull(productRepository.findById("id-1"));
+        assertNull(productRepository.findById("id-2"));
+    }
+
+    @Test
+    void testUpdateWhenExistingProductIdIsNull() throws Exception {
+        // Arrange: manually add a product with a null ID into productData
+        Field field = ProductRepository.class.getDeclaredField("productData");
+        field.setAccessible(true);
+        List<Product> productData = (List<Product>) field.get(productRepository);
+        Product productWithNullId = new Product();
+        productWithNullId.setProductId(null);
+        productWithNullId.setProductName("Null ID Product");
+        productWithNullId.setProductQuantity(10);
+        productData.add(productWithNullId);
+        
+        // Act: attempt to update with a product having a non-null ID
+        Product updated = new Product();
+        updated.setProductId("some-id");
+        updated.setProductName("Updated Name");
+        updated.setProductQuantity(20);
+        Product result = productRepository.update(updated);
+        
+        // Assert: since the existing product's ID is null, the condition fails and update returns null
+        assertNull(result);
     }
 }
