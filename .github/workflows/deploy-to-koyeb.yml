@@ -1,20 +1,19 @@
-name: Deploy to Koyeb
-
-on:
-  push:
-    branches:
-      - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Install Koyeb CLI
         run: |
           curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
           echo "PATH=$HOME/.koyeb/bin:$PATH" >> $GITHUB_ENV
-      - name: Login to Koyeb
-        run: koyeb login --token="${{ secrets.KOYEB_API_TOKEN }}"
-      - run: npm run build
-      - run: koyeb deploy
+
+      - name: Create Koyeb config file
+        run: |
+          mkdir -p $HOME/.koyeb
+          echo "token: ${{ secrets.KOYEB_API_TOKEN }}" > $HOME/.koyeb.yaml
+
+      - name: Deploy to Koyeb
+        run: koyeb deploy --app my-app
