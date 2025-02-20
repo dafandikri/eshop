@@ -11,7 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install Koyeb CLI
-        run: curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sudo sh
+          export PATH="/usr/local/bin:$PATH"
+          koyeb --version
       - run: koyeb login --token ${{ secrets.KOYEB_API_TOKEN }}
       - run: npm run build
       - run: koyeb deploy
