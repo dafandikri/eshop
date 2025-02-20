@@ -1,3 +1,6 @@
+# This Workflow doesn't work because the link deploy is not correct
+# To automate the deployment, turn on automatic deployment in the Koyeb dashboard
+
 name: Deploy to Koyeb (Docker)
 
 on:
