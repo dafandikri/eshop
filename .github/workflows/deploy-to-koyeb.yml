@@ -11,10 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install Koyeb CLI
-        run: |
-          wget https://github.com/koyeb/koyeb-cli/releases/download/v3.2.2/koyeb-cli_3.2.2_linux_amd64.tar.gz
-          tar -xzvf koyeb-cli_3.2.2_linux_amd64.tar.gz
-          sudo mv koyeb /usr/local/bin/
+        run: curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
       - run: koyeb login --token ${{ secrets.KOYEB_API_TOKEN }}
       - run: npm run build
       - run: koyeb deploy
