@@ -4,6 +4,7 @@ import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito; // added normal import
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,7 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doNothing;
 
 @ActiveProfiles("test")
 @WebMvcTest(ProductController.class)
@@ -125,7 +125,7 @@ public class ProductControllerTest {
 
     @Test
     void testDeleteProduct() throws Exception {
-        doNothing().when(service).deleteById("id-123");
+        Mockito.doNothing().when(service).deleteById("id-123");
         mockMvc.perform(post("/product/delete").param("id", "id-123"))
                .andExpect(status().is3xxRedirection())
                .andExpect(redirectedUrl("/product/list"));
