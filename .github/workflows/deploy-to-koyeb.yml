@@ -23,4 +23,6 @@ jobs:
           echo "token: ${{ secrets.KOYEB_API_TOKEN }}" > $HOME/.koyeb.yaml
 
       - name: Deploy to Koyeb
-        run: koyeb deploy --app fit-liuka --service eshop
+        run: |
+          koyeb service update eshop \
+          --app fit-liuka \
