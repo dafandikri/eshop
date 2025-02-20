@@ -3,8 +3,6 @@ plugins {
     jacoco
     id("org.springframework.boot") version "3.4.2"
     id("io.spring.dependency-management") version "1.1.7"
-
-    id("pmd")
 }
 
 val seleniumJavaVersion = "4.14.1"
@@ -14,10 +12,6 @@ val junitJupiterVersion = "5.9.1"
 
 group = "id.ac.ui.cs.advprog"
 version = "0.0.1-SNAPSHOT"
-
-pmd {
-    toolVersion = "7.0.0-rc4"
-}
 
 java {
     toolchain {

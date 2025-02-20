@@ -7,10 +7,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.ArgumentMatchers; // added for explicit any usage
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
@@ -34,7 +40,7 @@ class ProductServiceImplTest {
     @Test
     void testEditProductPositive() {
         // Arrange
-        when(productRepository.update(any(Product.class))).thenReturn(existingProduct);
+        when(productRepository.update(ArgumentMatchers.any(Product.class))).thenReturn(existingProduct);
 
         // Act
         Product updatedProduct = productService.update(existingProduct);
@@ -42,21 +48,21 @@ class ProductServiceImplTest {
         // Assert
         assertNotNull(updatedProduct);
         assertEquals("Existing Product", updatedProduct.getProductName());
-        verify(productRepository, times(1)).update(existingProduct);
+        verify(productRepository, org.mockito.Mockito.times(1)).update(existingProduct);
     }
 
     @Test
     void testEditProductNegative() {
         // Arrange
         // Simulate the repository returning null if it can’t find the product to update
-        when(productRepository.update(any(Product.class))).thenReturn(null);
+        when(productRepository.update(ArgumentMatchers.any(Product.class))).thenReturn(null);
 
         // Act
         Product notFoundProduct = productService.update(existingProduct);
 
         // Assert
         assertNull(notFoundProduct);
-        verify(productRepository, times(1)).update(existingProduct);
+        verify(productRepository, org.mockito.Mockito.times(1)).update(existingProduct);
     }
 
     @Test
@@ -68,7 +74,7 @@ class ProductServiceImplTest {
         productService.deleteById("test-uuid");
 
         // Assert: verify the interaction
-        verify(productRepository, times(1)).deleteById("test-uuid");
+        verify(productRepository, org.mockito.Mockito.times(1)).deleteById("test-uuid");
     }
 
     @Test
@@ -82,7 +88,7 @@ class ProductServiceImplTest {
         productService.deleteById("wrong-uuid");
 
         // Assert
-        verify(productRepository, times(1)).deleteById("wrong-uuid");
+        verify(productRepository, org.mockito.Mockito.times(1)).deleteById("wrong-uuid");
     }
 
     @Test
@@ -98,7 +104,7 @@ class ProductServiceImplTest {
         
         assertNotNull(createdProduct);
         assertEquals("New Product", createdProduct.getProductName());
-        verify(productRepository, times(1)).create(newProduct);
+        verify(productRepository, org.mockito.Mockito.times(1)).create(newProduct);
     }
 
     @Test
@@ -120,7 +126,7 @@ class ProductServiceImplTest {
         assertEquals(2, products.size());
         assertTrue(products.contains(p1));
         assertTrue(products.contains(p2));
-        verify(productRepository, times(1)).findAll();
+        verify(productRepository, org.mockito.Mockito.times(1)).findAll();
     }
 
     @Test
@@ -136,6 +142,6 @@ class ProductServiceImplTest {
         Product foundProduct = productService.findById(productId);
         assertNotNull(foundProduct);
         assertEquals("Exist Product", foundProduct.getProductName());
-        verify(productRepository, times(1)).findById(productId);
+        verify(productRepository, org.mockito.Mockito.times(1)).findById(productId);
     }
 }
