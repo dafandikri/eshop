@@ -16,11 +16,20 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class ProductRepositoryTest {
 
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
+
+    // Test implementation of IdGenerator that returns predictable IDs
+    private static class TestIdGenerator implements IdGenerator {
+        @Override
+        public String generateId() {
+            return "test-id-123";
+        }
+    }
 
     @BeforeEach
     void setUp() {
-        productRepository = new ProductRepository();
+        // Create repository with test ID generator
+        productRepository = new ProductRepository(new TestIdGenerator());
     }
 
     @Test
@@ -137,7 +146,10 @@ class ProductRepositoryTest {
         product.setProductName("Auto-ID Product");
         product.setProductQuantity(75);
         Product created = productRepository.create(product);
+
         assertNotNull(created.getProductId());
+        assertEquals("test-id-123", created.getProductId());
+
         // Check that the product is indeed saved:
         Product found = productRepository.findById(created.getProductId());
         assertNotNull(found);
