@@ -6,16 +6,18 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Repository
 public class ProductRepository {
     private List<Product> productData = new ArrayList<>();
-
+    
+    private final IdGenerator idGenerator;
+    
     @Autowired
-    private IdGenerator idGenerator;
+    public ProductRepository(IdGenerator idGenerator) {
+        this.idGenerator = idGenerator;
+    }
 
     public Product create(Product product) {
         if (product.getProductId() == null) {
