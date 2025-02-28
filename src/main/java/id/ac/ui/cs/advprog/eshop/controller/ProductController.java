@@ -79,7 +79,7 @@ public class ProductController {
 class CarController extends ProductController {
 
     @Autowired
-    private CarServiceImpl carservice;
+    private CarServiceImpl carService;
 
     @GetMapping("/createCar")
     public String createCarPage(Model model) {
@@ -90,13 +90,13 @@ class CarController extends ProductController {
 
     @PostMapping("/createCar")
     public String createCarPost(@ModelAttribute Car car, Model model) {
-        carservice.create(car);
+        carService.create(car);
         return "redirect:listCar";
     }
 
     @GetMapping("/listCar")
     public String carListPage(Model model) {
-        List<Car> allCars = carservice.findAll();
+        List<Car> allCars = carService.findAll();
         model.addAttribute("cars", allCars);
         return "carList";
     }
