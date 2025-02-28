@@ -17,8 +17,8 @@ public class CarRepository implements CarRepositoryInterface {
 
     @Override
     public Car create(Car car) {
-        if (car.getCarId() == null) {
-            car.setCarId(idGenerator.generateId());
+        if (car.getId() == null) { // Updated to use parent class method
+            car.setId(idGenerator.generateId());
         }
         carData.add(car);
         return car;
@@ -32,7 +32,7 @@ public class CarRepository implements CarRepositoryInterface {
     @Override
     public Car findById(String id) {
         for (Car car : carData) {
-            if (car.getCarId().equals(id)) {
+            if (car.getId().equals(id)) { // Updated to use parent class method
                 return car;
             }
         }
@@ -43,11 +43,11 @@ public class CarRepository implements CarRepositoryInterface {
     public Car update(String id, Car updatedCar) {
         for (int i = 0; i < carData.size(); i++) {
             Car car = carData.get(i);
-            if (car.getCarId().equals(id)) {
-                // Update the existing car with the new information
-                car.setCarName(updatedCar.getCarName());
+            if (car.getId().equals(id)) { // Updated to use parent class method
+                // Update using parent class methods
+                car.setName(updatedCar.getName());
+                car.setQuantity(updatedCar.getQuantity());
                 car.setCarColor(updatedCar.getCarColor());
-                car.setCarQuantity(updatedCar.getCarQuantity());
                 return car;
             }
         }
@@ -56,6 +56,6 @@ public class CarRepository implements CarRepositoryInterface {
 
     @Override
     public void delete(String id) {
-        carData.removeIf(car -> car.getCarId().equals(id));
+        carData.removeIf(car -> car.getId().equals(id)); // Updated to use parent class method
     }
 }

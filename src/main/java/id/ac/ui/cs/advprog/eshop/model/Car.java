@@ -8,46 +8,31 @@ import jakarta.validation.constraints.NotNull;
 
 @Getter @Setter
 public class Car extends Vehicle {
-    private String carId;
-    
-    @NotBlank(message = "Car name cannot be blank")
-    private String carName;
-    
     @NotBlank(message = "Car color cannot be blank")
     private String carColor;
     
-    @NotNull(message = "Quantity cannot be null")
-    @Min(value = 0, message = "Quantity must be at least 0")
-    private int carQuantity;
-    
-    // Override to synchronize with parent class
-    @Override
-    public String getId() {
-        return carId;
+    // For backward compatibility - delegates to parent methods
+    public String getCarId() {
+        return getId();
     }
     
-    @Override
-    public void setId(String id) {
-        this.carId = id;
+    public void setCarId(String id) {
+        setId(id);
     }
     
-    @Override
-    public String getName() {
-        return carName;
+    public String getCarName() {
+        return getName();
     }
     
-    @Override
-    public void setName(String name) {
-        this.carName = name;
+    public void setCarName(String name) {
+        setName(name);
     }
     
-    @Override
-    public int getQuantity() {
-        return carQuantity;
+    public int getCarQuantity() {
+        return getQuantity();
     }
     
-    @Override
-    public void setQuantity(int quantity) {
-        this.carQuantity = quantity;
+    public void setCarQuantity(int quantity) {
+        setQuantity(quantity);
     }
 }

@@ -57,7 +57,7 @@ class CarController {
         if (result.hasErrors()) {
             return "EditCar";
         }
-        carService.update(car.getCarId(), car);
+        carService.update(car.getId(), car);
         return "redirect:/car/listCar";
     }
 
