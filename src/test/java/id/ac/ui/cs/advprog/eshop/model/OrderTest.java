@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,29 +31,25 @@ class OrderTest {
         this.products.add(product2);
     }
 
-    // 4) Create unhappy path test: Test to create the order with empty products.
+    // Unhappy path: Test creating the order with empty products
     @Test
     void testCreateOrderEmptyProduct() {
         this.products.clear();
         assertThrows(IllegalArgumentException.class, () -> {
-            Order order = new Order(
-                    "13652556-012a-4c07-b546-54eb139d679b",
+            new Order("13652556-012a-4c07-b546-54eb139d679b",
                     this.products,
                     1708560000L,
-                    "Safira Sudrajat"
-            );
+                    "Safira Sudrajat");
         });
     }
 
-    // 5) Create a happy path test: Test to create the order with no status defined.
+    // Happy path: Test creating the order with the default status (no status parameter)
     @Test
     void testCreateOrderDefaultStatus() {
-        Order order = new Order(
-                "13652556-012a-4c07-b546-54eb139d679b",
+        Order order = new Order("13652556-012a-4c07-b546-54eb139d679b",
                 this.products,
                 1708560000L,
-                "Safira Sudrajat"
-        );
+                "Safira Sudrajat");
 
         assertSame(this.products, order.getProducts());
         assertEquals(2, order.getProducts().size());
@@ -62,58 +59,51 @@ class OrderTest {
         assertEquals("13652556-012a-4c07-b546-54eb139d679b", order.getId());
         assertEquals(1708560000L, order.getOrderTime());
         assertEquals("Safira Sudrajat", order.getAuthor());
-        assertEquals("WAITING_PAYMENT", order.getStatus());
+        // Using the enum’s default value here:
+        assertEquals(OrderStatus.WAITING_PAYMENT.getValue(), order.getStatus());
     }
 
-    // 6) Create a happy path test: Test to create the order status of "SUCCESS".
+    // Happy path: Test creating the order with SUCCESS status
     @Test
     void testCreateOrderSuccessStatus() {
-        Order order = new Order(
-                "13652556-012a-4c07-b546-54eb139d679b",
+        Order order = new Order("13652556-012a-4c07-b546-54eb139d679b",
                 this.products,
                 1708560000L,
                 "Safira Sudrajat",
-                "SUCCESS"
-        );
-        assertEquals("SUCCESS", order.getStatus());
+                OrderStatus.SUCCESS.getValue());
+        assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
     }
 
-    // 7) Create an unhappy path test: Test to create the order with invalid status.
+    // Unhappy path: Test creating the order with an invalid status
     @Test
     void testCreateOrderInvalidStatus() {
         assertThrows(IllegalArgumentException.class, () -> {
-            Order order = new Order(
-                    "13652556-012a-4c07-b546-54eb139d679b",
+            new Order("13652556-012a-4c07-b546-54eb139d679b",
                     this.products,
                     1708560000L,
                     "Safira Sudrajat",
-                    "MEOW"
-            );
+                    "MEOW");
         });
     }
 
-    // 8) Create a happy path test: Test to edit the order with one of correct status.
+    // Happy path: Test editing (setting) the order status to CANCELLED
     @Test
     void testSetStatusToCancelled() {
-        Order order = new Order(
-                "13652556-012a-4c07-b546-54eb139d679b",
+        Order order = new Order("13652556-012a-4c07-b546-54eb139d679b",
                 this.products,
                 1708560000L,
-                "Safira Sudrajat"
-        );
-        order.setStatus("CANCELLED");
-        assertEquals("CANCELLED", order.getStatus());
+                "Safira Sudrajat");
+        order.setStatus(OrderStatus.CANCELLED.getValue());
+        assertEquals(OrderStatus.CANCELLED.getValue(), order.getStatus());
     }
 
-    // 9) Create an unhappy path test: Test to edit the order with invalid status.
+    // Unhappy path: Test editing (setting) the order status to an invalid value
     @Test
     void testSetStatusToInvalidStatus() {
-        Order order = new Order(
-                "13652556-012a-4c07-b546-54eb139d679b",
+        Order order = new Order("13652556-012a-4c07-b546-54eb139d679b",
                 this.products,
                 1708560000L,
-                "Safira Sudrajat"
-        );
+                "Safira Sudrajat");
         assertThrows(IllegalArgumentException.class, () -> order.setStatus("MEOW"));
     }
 }
